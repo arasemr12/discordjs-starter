@@ -37,5 +37,5 @@ exports.data = new SlashCommandBuilder()
     .setDescription('help command')
 
 exports.conf = {
-    permLevel: 0
+    perms: []
 }

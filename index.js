@@ -4,18 +4,15 @@ const { Client, Intents, Collection, Permissions } = require('discord.js');
 global.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.commands = new Collection();
-require('./deploy-commands')("yes");
+require('./deploy-commands')("no");
 
 require('./util/eventLoader')();
 
-client.elevation = (interaction) => {
-    let permlvl = 0;
-    if (!interaction.member.guild) return permlvl = 3;
-    if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) permlvl = 1;
-    if (interaction.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) permlvl = 2;
-    if (interaction.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) permlvl = 3;
-    if (interaction.user.id === "441221465019514881") permlvl = 4;
-    return permlvl;
+client.elevation = (interaction,perms) => {
+    if (!interaction.member.guild) return true;
+    if (interaction.user.id === "441221465019514881") return true;
+    if (interaction.member.permissions.has(perms)) return true;
+    return false;
 };
 
 require('./boot/db').then(() => client.login(process.env.TOKEN));
